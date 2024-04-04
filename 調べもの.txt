@@ -1,0 +1,190 @@
+formの作成方法：
+html記述例：
+<form action="/my-handling-form-page" method="post"></form>
+action 属性は、フォームで収集したデータを送信すべき場所 (URL) を定義します。
+method 属性は、データを送信するために使用する HTTP メソッド（get または post）を定義します。
+
+<label>、<input>、<textarea> 要素：
+問い合わせフォームはとてもシンプルで、 3 つのテキストフィールドがあり、
+それぞれに対応する <label> がついています。
+
+1、名前の入力フィールドは、基本的な単一行のテキストフィールドです。
+2、メールアドレスの入力フィールドは、email 型の入力フィールドです。メールアドレスだけを受け付ける単一行のテキストフィールドです。
+3、メッセージの入力フィールドは <textarea> です。複数行のテキストフィールドです。
+
+form作成例：
+<form action="/my-handling-form-page" method="post">
+  <ul>
+    <li>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="user_name" />
+    </li>
+    <li>
+      <label for="mail">E-mail:</label>
+      <input type="email" id="mail" name="user_email" />
+    </li>
+    <li>
+      <label for="msg">Message:</label>
+      <textarea id="msg" name="user_message"></textarea>
+    </li>
+  </ul>
+</form>
+解説：
+<li> 要素はコードを扱いやすく構造化するとともに、スタイル設定を容易にするため (後述) に置いている。
+ ユーザビリティとアクセシビリティのため、それぞれのフォームコントロールに明示的にラベルをつける。
+  for 属性をすべての <label> 要素に使用し、
+  その値として関連付けるフォームコントロールの id を取る。
+  これで、フォームコントロールをラベルと関連付けることが可能。
+
+  利点：
+  フォームコントロールにラベルを関連付けて、
+  ユーザーがマウス、トラックパッド、タッチ端末でラベルをクリックすると、
+  対応するウィジェットがアクティブになり、
+  スクリーンリーダーのユーザーに読み上げられるアクセシブルな名前が提供される。
+input要素：
+<input> 要素において、もっとも重要な属性は、type 属性。
+ この属性は <input> 要素の見た目や動作を定義するために重要。
+
+最初の input に text という値を使用。これはこの属性の既定値。
+これはあらゆるテキストを受け入れる、単一行のテキストフィールドを表す。
+
+2 番目の input では、 email という値を使用。
+正しい形式のメールアドレスのみを受け付ける単一行のテキストフィールドを定義。
+この値は基本的なテキストフィールドを、
+ユーザーによって入力されたデータをチェックするようにする「賢い」フィールドへと変化させる。
+スマートフォンのように動的なキーボードのある端末で、メールアドレスを入力するのにふさわしいキーボードレイアウト
+（例えば既定で @ 記号があるもの）が表示されるようにする。
+注意点：
+<input> と <textarea></textarea> の構文に注意。
+これは HTML の奇妙な点の 1 つ。
+<input> タグは空要素。つまり、終了タグは不要。
+一方 <textarea> は空要素ではないので、適切な終了タグで閉じる必要がある。
+これは HTML フォームの特定の機能、つまり既定値の定義方法に影響がある。
+<input> 要素の既定値を定義するには、次のように value 属性を使う必要あり。
+例：
+<input type="text" value="既定でこの要素にはこの文章が挿入されます" />
+一方、 <textarea> の既定値を定義したい場合は、次のように既定値を <textarea> の開始タグと終了タグの間に記入。
+例：
+<textarea>
+既定でこの要素にはこの文章が挿入されます
+</textarea>
+
+button要素：
+例：
+<li class="button">
+  <button type="submit">メッセージを送信</button>
+</li>
+<button> 要素は type 属性を受け入れる。
+これは submit、reset、button の 3 種類の値のうち 1 つを受け入れる。
+1、submit ボタン（既定値）をクリックすると、フォームのデータを <form> 要素の action 属性で定義したウェブページへ送信。
+2、reset ボタンをクリックすると、直ちにすべてのフォームウィジェットを既定値にリセット。 UX の観点では、このボタンは悪い行為であると考えられている、必要な理由がない限りこのボタンは使用しないようにしてください。
+3、button ボタンをクリックすると何もしません! おかしなことのように見えますが、独自のボタンを作成するのに驚くほど役立ちます。 JavaScript でその機能を定義することができます。
+
+formを整える：
+ページの HTML の head 内に <style> 要素を追加。次のようになる。
+<style></style>
+style タグの中に、以下の CSS を追加。
+ーーーーーーーーーーーーーーーーーーーーーー
+form {
+  /* フォームをページの中央に配置 */
+  margin: 0 auto;
+  width: 400px;
+  /* フォームの輪郭 */
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+form li + li {
+  margin-top: 1em;
+}
+
+label {
+  /* 大きさと配置を統一 */
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+}
+
+input,
+textarea {
+  /* すべてのテキストフィールドのフォント設定を一致させる
+     既定で、 textarea には等幅フォントが設定されている */
+  font: 1em sans-serif;
+
+  /* テキストフィールドの大きさを統一 */
+  width: 300px;
+  box-sizing: border-box;
+
+  /* フォームフィールド境界に合わせる */
+  border: 1px solid #999;
+}
+
+input:focus,
+textarea:focus {
+  /* フォーカスのある要素を強調する */
+  border-color: #000;
+}
+
+textarea {
+  /* 複数行のテキストフィールドをラベルに揃える */
+  vertical-align: top;
+
+  /* テキスト入力に十分な空間を与える */
+  height: 5em;
+}
+
+.button {
+  /* ボタンを他のテキストフィールドと同じ場所に置く */
+  padding-left: 90px; /* label 要素と同じサイズ */
+}
+
+button {
+  /* このマージンは、ラベルとテキストフィールドの間のスペースと
+     おおよそ同じスペースを表す */
+  margin-left: 0.5em;
+}
+
+ウェブサーバーへのデータの送信：面倒な作業
+ <form> 要素は action 属性と method 属性により、どこへどのようにデータを送信するかを定義できる。
+フォームコントロールには name をつける。
+これらの名前はクライアント側とサーバー側の両側で重要。
+ブラウザー側ではそれぞれのデータにどのような名前をつけるかを示すものであり、
+サーバー側では名前によってそれぞれのデータを扱うことができる。
+フォームデータは名前/値のペアとしてサーバーに送信される。
+
+データに名前をつけるために、各々のデータを集めるフォームウィジェットの name 属性を使用しなければならない。
+以下フォームのコード：
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+<form action="/my-handling-form-page" method="post">
+  <ul>
+    <li>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="user_name" />
+    </li>
+    <li>
+      <label for="mail">E-mail:</label>
+      <input type="email" id="mail" name="user_email" />
+    </li>
+    <li>
+      <label for="msg">Message:</label>
+      <textarea id="msg" name="user_message"></textarea>
+    </li>
+
+    …
+  </ul>
+</form>
+
+この例では、フォームから "user_name", "user_email", "user_message" という 3 つのデータが送信される。
+このデータは、 HTTP の POST メソッドを用いて "/my-handling-form-page" という URL に送信される。
+
+サーバー側では、 URL "/my-handling-form-page" にあるスクリプトが、
+HTTP リクエストに含まれる 3 つのキー/値の項目のリストとしてデータを受け取ることになる。
+このスクリプトがどのようにデータを処理するかは、指定できる
+各サーバーサイド言語 (PHP, Python, Ruby, Java, C# など) は、フォームデータを処理する独自のメカニズムを持っている。
